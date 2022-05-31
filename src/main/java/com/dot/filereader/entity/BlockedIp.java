@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Blocked_IP is a domain entity that represents ips that have exceeded specified rate limit
+ */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -16,6 +20,9 @@ import javax.persistence.Table;
 @Table(name = "blocked_ip")
 public class BlockedIp extends BaseEntity {
 
+    /**
+     * Properties
+     */
     private String requestNumber;
     private String comments;
 

@@ -7,6 +7,7 @@ import com.dot.filereader.repository.UserAccessLogRepository;
 import com.dot.filereader.utils.TimeDuration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,29 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * FileReaderImpl is a concrete class that provides implementations for the contracts in the FileReader interface.
+ */
+
 @Slf4j
 @Service
 public class FileReaderImpl implements FileReader {
+
+    /**
+     * Properties
+     */
 
     @Autowired
     private UserAccessLogRepository userAccessLogRepository;
     @Autowired
     private BlockIpRepository blockIpRepository;
 
+    @Value( "${file-reader.path}" )
+    String daily;
+
+    /**
+     * openFile() opens a stream to the connected file object using the Scanner class instance
+     */
     @Override
     public void openFile() {
         Scanner input = null;
@@ -47,6 +62,9 @@ public class FileReaderImpl implements FileReader {
         }
     }
 
+    /**
+     * processFile() opens a stream to the connected file object using the BufferedReader Class instance
+     */
     @Override
     public void processFile() {
         BufferedReader bufferedReader = null;
@@ -72,6 +90,10 @@ public class FileReaderImpl implements FileReader {
         }
     }
 
+    /**
+     * readCurrentLine() breaks into token a line of String using pipe delimiter
+     * @param currentLine
+     */
     @Override
     public void readCurrentLine(String currentLine) {
         try {
@@ -103,6 +125,13 @@ public class FileReaderImpl implements FileReader {
         }
     }
 
+    /**
+     * checkRequestRate() processes access rate for an ip within a given time frame
+     * @param ip
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     @Override
     public List<UserAccessLog> checkRequestRate(String ip, LocalDateTime startTime, LocalDateTime endTime) {
         List<UserAccessLog> userAccessLogs;
@@ -115,6 +144,14 @@ public class FileReaderImpl implements FileReader {
         return userAccessLogs;
     }
 
+    /**
+     * checkRequestRateCount processes rate limit access for an ip within a given time frame
+     * @param ip
+     * @param startTime
+     * @param endTime
+     * @param limit
+     * @return
+     */
     @Override
     public Long CheckRequestRateCount(String ip, LocalDateTime startTime, LocalDateTime endTime, int limit) {
         Long count = userAccessLogRepository.countUserAccessLogByUserIpAndTimeStampIsBetween(ip, startTime, endTime);
@@ -135,6 +172,14 @@ public class FileReaderImpl implements FileReader {
         return count;
     }
 
+    /**
+     * checkRequestRateCount processes rate limit access for an ip within a given time frame.
+     * @param ip
+     * @param startTime
+     * @param duration
+     * @param limit
+     * @return
+     */
     @Override
     public Long CheckRequestRateCount(String ip, LocalDateTime startTime, String duration, int limit) {
         Long count = 1L;
@@ -150,6 +195,12 @@ public class FileReaderImpl implements FileReader {
         return count;
     }
 
+    /**
+     * checkRequestRateCount processes rate limit access of ips within a given time frame
+     * @param startTime
+     * @param duration
+     * @param limit
+     */
     @Override
     public void checkRequestRateCount(LocalDateTime startTime, String duration, int limit) {
         LocalDateTime endTime = calculateEndTime(startTime, duration);
@@ -176,6 +227,12 @@ public class FileReaderImpl implements FileReader {
         });
     }
 
+    /**
+     * calculateEndTime() calculate the end time period used when enforcing rate limit
+     * @param startTime
+     * @param duration
+     * @return
+     */
     private LocalDateTime calculateEndTime(LocalDateTime startTime, String duration){
         LocalDateTime endTime = null;
 
@@ -195,6 +252,11 @@ public class FileReaderImpl implements FileReader {
         return endTime;
     }
 
+    /**
+     * calculateTimeDuration() is used to convert from milliseconds of time to its Duration period equivalent
+     * @param timeInterval
+     * @return
+     */
     private long calculateTimeDuration(long timeInterval){
         Duration duration = Duration.ofMillis(timeInterval);
         long seconds = duration.getSeconds();

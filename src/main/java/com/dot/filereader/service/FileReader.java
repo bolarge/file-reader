@@ -5,6 +5,9 @@ import com.dot.filereader.entity.UserAccessLog;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * FileReader is an interface, that provides the contract for its operations. Its specifies the API for communication with other objects.
+ */
 public interface FileReader {
 
     void openFile();

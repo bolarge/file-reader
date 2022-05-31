@@ -9,6 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * User_Access_Log is a domain entity that is used in capturing timestamp detail of an ip address
+ */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -17,6 +21,9 @@ import java.time.LocalDateTime;
 @Table(name = "user_access_log")
 public class UserAccessLog extends BaseEntity{
 
+    /**
+     * Properties
+     */
     private LocalDateTime timeStamp;
     private String requestScheme, statusCode, userAgent;
 
