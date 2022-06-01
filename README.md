@@ -22,14 +22,6 @@ file-reader.daily=Daily
 file-reader.hourly-limit=100
 file-reader.daily-limit=500
 ````
-### Tech Stack: 
-* Java 11 
-* SpringBoot 2.7 
-* Spring Data JPA
-* Hibernate 
-* MySQL 
-
-
 ###Database Configuration
 ````
 spring.datasource.url=jdbc:mysql://localhost:3306/req_limit?serverTimezone=UTC&useSSL=false
@@ -39,4 +31,12 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.database=MYSQL
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.hibernate.ddl-auto=none
+````
+### Tech Stack: 
+````
+* Java 11 
+* SpringBoot 2.7 
+* Spring Data JPA
+* Hibernate 
+* MySQL 
 ````
