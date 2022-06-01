@@ -22,6 +22,13 @@ file-reader.daily=Daily
 file-reader.hourly-limit=100
 file-reader.daily-limit=500
 ````
+### Tech Stack: 
+* Java 11 
+* SpringBoot 2.7 
+* Spring Data JPA
+* Hibernate 
+* MySQL 
+
 
 ###Database Configuration
 ````
